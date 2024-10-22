@@ -5,7 +5,7 @@ const Badge = ({ children, className = '' }) => (
   <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 ${className}`}>
     {children}
   </div>
-);
+);x
 
 const ProductModal = ({ product, isOpen, onClose, onAddToCart }) => {
   const [isAnimating, setIsAnimating] = useState(false);
