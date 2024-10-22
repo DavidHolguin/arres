@@ -42,11 +42,7 @@ const CompanyList = () => {
       <div className=" mb-2"> {/* Añadido margen vertical */}
       <MiniSearch />
       </div>
-      <Slider />
-      <div className="my-4"> {/* Añadido margen vertical */}
-        <TopBurgers />
-      </div>
-      <BannerSection />
+     
       <MenuBar />
     </div>
   );

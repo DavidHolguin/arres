@@ -5,14 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const SearchCategories = [
-  "Quizá un hot dog...",
-  "Quizá una barbería...",
-  "Encuentra negocios locales...",
-  "Descubre productos...",
-  "Quizá una hamburguesa...",
-  "Encuentra artículos...",
-  "Explora restaurantes...",
-  "Busca servicios..."
+  "¿Buscas un hotel cerca?...",
+  "Encuentra el mejor bar...",
+  "Descubre restaurantes locales...",
+  "¿Necesitas un hostal?...",
+  "Explora parques cercanos...",
+  "Encuentra lugares para comer...",
+  "Descubre lugares para descansar...",
+  "Lugares para divertirte..."
 ];
 
 const MiniSearch = () => {
@@ -117,15 +117,15 @@ const MiniSearch = () => {
         className="text-3xl md:text-4xl font-bold ml-4"
       >
         {user?.username ? (
-          <span className="dark:text-white text-[#09FDFD]">
+          <span className="dark:text-white text-[#f7bb17]">
             ¡Hola,{' '}
-            <span className="dark:text-[#09FDFD] text-[#09FDFD]">
+            <span className="dark:text-[#f7bb17] text-[#f7bb17]">
               {typedUsername}
             </span>
             !
           </span>
         ) : (
-          <span className="dark:text-white text-[#09FDFD]">
+          <span className="dark:text-white text-[#f7bb17]">
             ¡Hola, qué gusto verte!
           </span>
         )}
@@ -146,9 +146,9 @@ const MiniSearch = () => {
           placeholder={placeholderText}
           onMouseEnter={() => handleInputHover(true)}
           onMouseLeave={() => handleInputHover(false)}
-          className="w-full pl-14 pr-6 py-4 rounded-full border-2 border-[#09FDFD] 
+          className="w-full pl-14 pr-6 py-4 rounded-full border-2 border-[#f7bb17] 
                     bg-white/70 backdrop-blur-md dark:bg-gray-800/70
-                    focus:outline-none focus:ring-4 focus:ring-[#09FDFD]/30
+                    focus:outline-none focus:ring-4 focus:ring-[#f7bb17]/30
                     placeholder-gray-400 dark:placeholder-gray-500
                     text-gray-900 dark:text-white
                     transition-all duration-300
@@ -156,7 +156,7 @@ const MiniSearch = () => {
                     shadow-lg hover:shadow-xl"
         />
         <SearchIcon 
-          className="absolute left-5 top-1/2 transform -translate-y-1/2 text-[#09FDFD]" 
+          className="absolute left-5 top-1/2 transform -translate-y-1/2 text-[#f7bb17]" 
           size={28}
         />
       </form>

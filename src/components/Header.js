@@ -55,21 +55,26 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full bg-[#09FDFD] dark:bg-gray-800 shadow-md dark:shadow-gray-900/50 z-50 font-['Poppins',sans-serif] transition-all duration-500 ease-in-out ${
+      className={`fixed top-0 left-0 w-full bg-[#f5bc24] dark:bg-gray-800 shadow-md dark:shadow-gray-900/50 z-50 font-['Poppins',sans-serif] transition-all duration-500 ease-in-out ${
         showHeader ? 'transform translate-y-0' : 'transform -translate-y-full'
       }`}
     >
-      <nav className="container mx-auto flex justify-between items-center py-4 px-6">
-        <div className="w-full flex justify-center">
+      <nav className="container mx-auto flex justify-between items-center py-2 px-6">
+        <div className="flex justify-start">
           <Link to="/">
             <img
               src="/logoFindout.webp"
               alt="Logo"
-              className="h-6 object-contain dark:filter dark:brightness-110"
+              className="h-10  object-contain dark:hidden"
+            />
+            <img
+              src="/logoFindoutDarkMode.webp"
+              alt="Logo Dark Mode"
+              className="h-10 object-contain hidden dark:block"
             />
           </Link>
         </div>
-        <div className="absolute right-6 flex items-center gap-2">
+        <div className="flex items-center gap-2">
           {!user && (
             <Link 
               to="/login" 

@@ -1,6 +1,7 @@
 {
-  "short_name": "Fondout",
-  "name": "Find Out Now",
+  "short_name": "Influbot",
+  "name": "Directoria Influbot",
+  "description": "Directoria Influbot",
   "icons": [
     {
       "src": "favicon.ico",
