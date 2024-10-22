@@ -181,7 +181,7 @@ const Login = () => {
         }
 
         .dark .inputForm:focus-within {
-          border: 1.5px solid #09fdfd;
+          border: 1.5px solid #f7bb17;
         }
 
         .flex-row {
@@ -211,12 +211,12 @@ const Login = () => {
         }
 
         .dark .span {
-          color: #09fdfd;
+          color: #f7bb17;
         }
 
         .button-submit {
           margin: 20px 0 10px 0;
-          background-color: #09fdfd;
+          background-color: #f7bb17;
           border: none;
           color: white;
           font-size: 15px;

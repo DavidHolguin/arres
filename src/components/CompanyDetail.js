@@ -267,7 +267,7 @@ const CompanyDetail = () => {
         <div className="flex flex-col items-center">
           <div className="w-24 h-24 rounded-full flex items-center justify-center relative">
             <div className="absolute inset-0 border-4 border-transparent rounded-full animate-spin-slow" style={{
-              backgroundImage: 'linear-gradient(0deg, #09fdfd, #66ffff, #ff9dd1, #ff69b4, #09fdfd)',
+              backgroundImage: 'linear-gradient(0deg, #f7bb17, #66ffff, #ff9dd1, #ff69b4, #f7bb17)',
               backgroundSize: '100% 400%',
               animation: 'rotating 2s linear infinite, gradientRotate 5s linear infinite'
             }}></div>
@@ -292,7 +292,7 @@ const CompanyDetail = () => {
           </div>
           <div className="mt-2 text-center">
             <h3 className="text-gray-600 dark:text-gray-300 text-2xl leading-4 font-extrabold">{company.name}</h3>
-            <p className="text-[#09fdfd] dark:text-[#09fdfd] text-base font-medium">
+            <p className="text-[#f7bb17] dark:text-[#f7bb17] text-base font-medium">
               {company.category && typeof company.category === 'object' 
                 ? company.category.name 
                 : (company.category || 'Categoría de la empresa')}
@@ -331,7 +331,7 @@ const CompanyDetail = () => {
             <p className="text-sm text-gray-600 dark:text-gray-300">
               {isOpen ? `Hasta ${nextTime}` : `Abre ${nextTime}`}
             </p>
-            <a href="#" className="flex items-center justify-center mt-2 leading-4 text-[#09fdfd] dark:text-cyan-300">
+            <a href="#" className="flex items-center justify-center mt-2 leading-4 text-[#f7bb17] dark:text-cyan-300">
               <span>{company.address}</span>
             </a>
           </div>
@@ -342,7 +342,7 @@ const CompanyDetail = () => {
               
               <a 
                 href="#" 
-                className="text-white font-bold text-sm px-6 py-2 rounded-full flex items-center gap-2 shadow hover:shadow-md transition-all duration-300 backdrop-blur-lg bg-[#09fdfd] dark:bg-[#09fdfd] hover:shadow-cyan-300"
+                className="text-white font-bold text-sm px-6 py-2 rounded-full flex items-center gap-2 shadow hover:shadow-md transition-all duration-300 backdrop-blur-lg bg-[#f7bb17] dark:bg-[#f7bb17] hover:shadow-cyan-300"
               >
                 <Send className="w-4 h-4" />
                 Escribir
@@ -351,7 +351,7 @@ const CompanyDetail = () => {
                 href={company.instagram_url || '#'} 
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 bg-[#09fdfd] dark:bg-[#09fdfd] rounded-full shadow hover:shadow-md  transition-all duration-300 text-white backdrop-blur-lg bg-opacity-90 dark:from-pink-600 dark:to-purple-600 dark:hover:shadow-pink-600/50"
+                className="p-2 bg-[#f7bb17] dark:bg-[#f7bb17] rounded-full shadow hover:shadow-md  transition-all duration-300 text-white backdrop-blur-lg bg-opacity-90 dark:from-pink-600 dark:to-purple-600 dark:hover:shadow-pink-600/50"
               >
                 <Instagram className="w-5 h-5" />
               </a>

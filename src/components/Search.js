@@ -6,14 +6,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ProductModal from './ProductModal'; // Asegúrate de que la ruta de importación sea correcta
 
 const FrasesDeBusqueda = [
-  "Quizá un hot dog...",
-  "Quizá una barbería...",
-  "Encuentra negocios locales...",
-  "Descubre productos...",
-  "Quizá una hamburguesa...",
-  "Encuentra artículos...",
-  "Explora restaurantes...",
-  "Busca servicios..."
+  "¿Buscas un hotel cerca?...",
+  "Encuentra el mejor bar...",
+  "Descubre restaurantes locales...",
+  "¿Necesitas un hostal?...",
+  "Explora parques cercanos...",
+  "Encuentra lugares para comer...",
+  "Descubre lugares para descansar...",
+  "Lugares para divertirte..."
 ];
 
 const useScrollDirection = () => {
@@ -63,7 +63,7 @@ const CompanyLogo = ({ logo, companyName = '', className = "" }) => {
 
   if (error || !logo) {
     return (
-      <div className={`w-12 h-12 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center border-2 border-[#09FDFD] ${className}`}>
+      <div className={`w-12 h-12 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center border-2 border-[#f7bb17] ${className}`}>
         <span className="text-lg font-bold text-gray-500 dark:text-gray-400">
           {companyName ? companyName.charAt(0).toUpperCase() : '?'}
         </span>
@@ -407,7 +407,7 @@ const Search = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className={`relative overflow-hidden border border-[#09FDFD] dark:border-[#09FDFD] hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 rounded-lg ${
+            className={`relative overflow-hidden border border-[#f7bb17] dark:border-[#f7bb17] hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 rounded-lg ${
               businessStatus && !businessStatus.isOpen ? 'opacity-60' : ''
             }`}
           >
@@ -431,15 +431,15 @@ const Search = () => {
                     <div className={`
                       rounded-full text-sm font-bold shadow-lg
                       ${businessStatus.isOpen 
-                        ? 'bg-gradient-to-r from-cyan-400 to-cyan-300 text-white' 
+                        ? 'bg-gradient-to-r bg-[#f7bb17a1] to-cyan-300 text-white' 
                         : 'bg-gradient-to-r from-red-500 to-red-400 text-white'}
                     `}>
                       <div className="flex items-center">
                         <span className={`
                           px-3 py-1 rounded-full
-                          ${businessStatus.isOpen ? 'bg-cyan-500' : 'bg-red-600'}
+                          ${businessStatus.isOpen ? 'bg-[#f7bb17]' : 'bg-red-600'}
                         `}>
-                          {businessStatus.isOpen ? 'OPEN NOW' : 'CLOSE'}
+                          {businessStatus.isOpen ? 'ABIERTO' : 'CERRADO'}
                         </span>
                         <span className="px-2 whitespace-nowrap">
                           {businessStatus.isOpen 
@@ -456,13 +456,13 @@ const Search = () => {
                 <h3 className="text-xl font-semibold leading-4 dark:text-white">{company.name}</h3>
                 <Link 
                   to={`/company-categories/${company.category?.id}`}
-                  className="text-base text-[#09FDFD] hover:text-[#00d8d8] transition-colors duration-300"
+                  className="text-base text-[#f7bb17] hover:text-[#00d8d8] transition-colors duration-300"
                 >
                   {company.category?.name}
                 </Link>
                 <p className="text-sm leading-4 text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">{company.description}</p>
                 {shouldShowProducts && (
-                  <p className="text-sm text-[#09FDFD] mt-2">
+                  <p className="text-sm text-[#f7bb17] mt-2">
                     {matchingProducts.length} producto{matchingProducts.length !== 1 ? 's' : ''} encontrado{matchingProducts.length !== 1 ? 's' : ''}
                   </p>
                 )}
@@ -487,7 +487,7 @@ const Search = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="relative rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm border border-[#09FDFD] dark:border-[#09FDFD] cursor-pointer"
+            className="relative rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm border border-[#f7bb17] dark:border-[#f7bb17] cursor-pointer"
             onClick={() => handleProductClick(product)}
           >
             <div className="relative">
@@ -506,7 +506,7 @@ const Search = () => {
               <h3 className="text-lg font-semibold dark:text-white">{product.name}</h3>
               <p className="text-sm text-gray-600 dark:text-gray-300 leading-4 line-clamp-2">{product.description}</p>
               <div className="mt-2 flex justify-between items-center">
-                <p className="text-sm text-[#09FDFD]">{productCompany?.name}</p>
+                <p className="text-sm text-[#f7bb17]">{productCompany?.name}</p>
                 <span className="text-xs text-gray-500 dark:text-gray-400">{productCategory?.name}</span>
               </div>
             </div>
@@ -557,7 +557,7 @@ const Search = () => {
                       onMouseLeave={() => handleInputHover(false)}
                       className="w-full pl-12 pr-4 py-3 rounded-full border border-gray-200 dark:border-gray-700
                                 bg-white/70 dark:bg-gray-800/70 backdrop-blur-md shadow-lg
-                                focus:outline-none focus:ring-2 focus:ring-[#09FDFD]
+                                focus:outline-none focus:ring-2 focus:ring-[#f7bb17]
                                 placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-white
                                 transition-all duration-300"
                     />
@@ -572,7 +572,7 @@ const Search = () => {
                     onClick={() => setActiveTab('companies')}
                     className={`p-3 rounded-full transition-all duration-300 ${
                       activeTab === 'companies'
-                        ? 'bg-[#09FDFD] text-white shadow-lg'
+                        ? 'bg-[#f7bb17] text-white shadow-lg'
                         : 'bg-white/70 dark:bg-gray-800/70 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                     }`}
                   >
@@ -585,7 +585,7 @@ const Search = () => {
                     onClick={() => setActiveTab('products')}
                     className={`p-3 rounded-full transition-all duration-300 ${
                       activeTab === 'products'
-                        ? 'bg-[#09FDFD] text-white shadow-lg'
+                        ? 'bg-[#f7bb17] text-white shadow-lg'
                         : 'bg-white/70 dark:bg-gray-800/70 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                     }`}
                   >
@@ -605,7 +605,7 @@ const Search = () => {
                       className={`
                         py-1 px-4 rounded-full whitespace-nowrap text-sm
                         ${selectedCategories.includes(category.id)
-                          ? 'bg-[#09FDFD] text-white shadow-md'
+                          ? 'bg-[#f7bb17] text-white shadow-md'
                           : 'bg-white/70 dark:bg-gray-800/70 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                         }
                         border border-gray-200 dark:border-gray-700 backdrop-blur-sm transition-all duration-300

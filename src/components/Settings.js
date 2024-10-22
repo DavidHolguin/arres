@@ -7,7 +7,7 @@ const CustomSwitch = ({ checked, onChange }) => (
     <input type="checkbox" className="sr-only" checked={checked} onChange={onChange} />
     <div className="w-11 h-6 bg-gray-200 rounded-full shadow-inner transition duration-200 ease-in-out">
       <div
-        className={`bg-white w-4 h-4 rounded-full shadow transition transform duration-200 ease-in-out ${checked ? 'translate-x-5 bg-[#09fdfd] ' : ''}`}
+        className={`bg-white w-4 h-4 rounded-full shadow transition transform duration-200 ease-in-out ${checked ? 'translate-x-5 bg-[#f7bb17] ' : ''}`}
       />
     </div>
   </label>
@@ -240,7 +240,7 @@ const Settings = () => {
                 />
                 <button
                   onClick={handleAddAddress}
-                  className="p-2 bg-[#09fdfd]  hover:bg-blue-600 text-white rounded-lg transition-colors duration-200"
+                  className="p-2 bg-[#f7bb17]  hover:bg-blue-600 text-white rounded-lg transition-colors duration-200"
                 >
                   Agregar
                 </button>
@@ -266,7 +266,7 @@ const Settings = () => {
             <div className="pt-4">
               <button
                 onClick={handleDownloadApp}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#09fdfd]  hover:bg-blue-600 text-white rounded-lg transition-colors duration-200"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#f7bb17]  hover:bg-blue-600 text-white rounded-lg transition-colors duration-200"
               >
                 <Download size={20} />
                 Descargar App
@@ -287,7 +287,7 @@ const Settings = () => {
             </ol>
             <button
               onClick={() => setShowIOSInstructions(false)}
-              className="mt-4 px-4 py-2 bg-[#09fdfd]  hover:bg-blue-600 text-white rounded-lg transition-colors duration-200"
+              className="mt-4 px-4 py-2 bg-[#f7bb17]  hover:bg-blue-600 text-white rounded-lg transition-colors duration-200"
             >
               Cerrar
             </button>

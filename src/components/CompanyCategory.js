@@ -25,7 +25,7 @@ const CompanyLogo = ({ logo, companyName = '', className = "" }) => {
 
   if (error || !logo) {
     return (
-      <div className={`w-12 h-12 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center border-2 border-[#09FDFD] ${className}`}>
+      <div className={`w-12 h-12 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center border-2 border-[#f7bb17] ${className}`}>
         <span className="text-lg font-bold text-gray-500 dark:text-gray-400">
           {companyName ? companyName.charAt(0).toUpperCase() : '?'}
         </span>
@@ -102,7 +102,7 @@ const CompanyCategory = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-xl font-bold mb-6 text-[#09fdfd] dark:text-[#09fdfd]">
+      <h1 className="text-xl font-bold mb-6 text-[#f7bb17] dark:text-[#f7bb17]">
        {categoryName}
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -112,7 +112,7 @@ const CompanyCategory = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="relative overflow-hidden border border-[#09FDFD] dark:border-[#09FDFD] hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 rounded-lg"
+            className="relative overflow-hidden border border-[#f7bb17] dark:border-[#f7bb17] hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 rounded-lg"
           >
             <Link to={`/company/${company.id}`}>
               <div className="relative">

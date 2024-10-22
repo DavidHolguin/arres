@@ -184,7 +184,7 @@ const Profile = () => {
                   </div>
                   <button
                     onClick={() => setIsEditing(true)}
-                    className="w-full py-2 px-4 bg-[#09fdfd] text-white rounded-lg hover:bg-[#08e0e0] transition"
+                    className="w-full py-2 px-4 bg-[#f7bb17] text-white rounded-lg hover:bg-[#08e0e0] transition"
                   >
                     Editar Información
                   </button>
@@ -206,7 +206,7 @@ const Profile = () => {
                 <Key className="text-gray-500 dark:text-gray-400" size={20} />
                 <span>Cambiar contraseña</span>
               </div>
-              <button className="w-full py-2 px-4 bg-[#09fdfd] text-white rounded-lg hover:bg-[#08e0e0] transition">
+              <button className="w-full py-2 px-4 bg-[#f7bb17] text-white rounded-lg hover:bg-[#08e0e0] transition">
                 Actualizar Seguridad
               </button>
             </div>
