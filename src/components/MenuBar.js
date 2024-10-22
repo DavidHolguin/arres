@@ -9,11 +9,9 @@ const MenuBar = () => {
   
   useEffect(() => {
     setShowMenu(true);
-    // Resetear la animación del menú cuando cambia la ruta
     return () => setShowMenu(false);
   }, [location.pathname]);
 
-  // Alternar el ícono cada 3 segundos
   useEffect(() => {
     const interval = setInterval(() => {
       setIsIconSwapped(prev => !prev);
@@ -38,9 +36,13 @@ const MenuBar = () => {
         <Home size={20} className={`mb-1 ${
           isActive('/') 
             ? 'text-[#f7bb17] dark:text-[#f7bb17]' 
-            : 'text-gray-600 dark:text-gray-400 hover:text-[#f7bb17] dark:hover:text-[#f7bb17]'
+            : 'text-gray-600 dark:text-white hover:text-[#f7bb17] dark:hover:text-[#f7bb17]'
         }`} />
-        <span className="text-xs font-medium transition-colors duration-200 mb-1">Inicio</span>
+        <span className={`text-xs font-medium transition-colors duration-200 mb-1 ${
+          isActive('/')
+            ? 'text-[#f7bb17] dark:text-[#f7bb17]'
+            : 'text-gray-600 dark:text-white'
+        }`}>Inicio</span>
       </Link>
 
       <Link
@@ -51,12 +53,15 @@ const MenuBar = () => {
         <Store size={20} className={`mb-1 ${
           isActive('/places')
             ? 'text-[#f7bb17] dark:text-[#f7bb17]'
-            : 'text-gray-600 dark:text-gray-400 hover:text-[#f7bb17] dark:hover:text-[#f7bb17]'
+            : 'text-gray-600 dark:text-white hover:text-[#f7bb17] dark:hover:text-[#f7bb17]'
         }`} />
-        <span className="text-xs font-medium transition-colors duration-200 mb-1">Comercios</span>
+        <span className={`text-xs font-medium transition-colors duration-200 mb-1 ${
+          isActive('/places')
+            ? 'text-[#f7bb17] dark:text-[#f7bb17]'
+            : 'text-gray-600 dark:text-white'
+        }`}>Comercios</span>
       </Link>
 
-      {/* Animated Central ChatBot Button */}
       <Link
         to="/chats"
         className="flex flex-col items-center pb-1 w-20 group"
@@ -82,7 +87,7 @@ const MenuBar = () => {
         <span className={`text-xs font-medium mb-1 transition-colors duration-200 ${
           isActive('/chats')
             ? 'text-[#f7bb17] dark:text-[#f7bb17]'
-            : 'text-gray-600 dark:text-gray-400 group-hover:text-[#f7bb17]'
+            : 'text-gray-600 dark:text-white group-hover:text-[#f7bb17]'
         }`}>ChatBot</span>
       </Link>
 
@@ -94,9 +99,13 @@ const MenuBar = () => {
         <User size={20} className={`mb-1 ${
           isActive('/profile')
             ? 'text-[#f7bb17] dark:text-[#f7bb17]'
-            : 'text-gray-600 dark:text-gray-400 hover:text-[#f7bb17] dark:hover:text-[#f7bb17]'
+            : 'text-gray-600 dark:text-white hover:text-[#f7bb17] dark:hover:text-[#f7bb17]'
         }`} />
-        <span className="text-xs font-medium transition-colors duration-200 mb-1">Perfil</span>
+        <span className={`text-xs font-medium transition-colors duration-200 mb-1 ${
+          isActive('/profile')
+            ? 'text-[#f7bb17] dark:text-[#f7bb17]'
+            : 'text-gray-600 dark:text-white'
+        }`}>Perfil</span>
       </Link>
 
       <Link
@@ -107,9 +116,13 @@ const MenuBar = () => {
         <Settings size={20} className={`mb-1 ${
           isActive('/settings')
             ? 'text-[#f7bb17] dark:text-[#f7bb17]'
-            : 'text-gray-600 dark:text-gray-400 hover:text-[#f7bb17] dark:hover:text-[#f7bb17]'
+            : 'text-gray-600 dark:text-white hover:text-[#f7bb17] dark:hover:text-[#f7bb17]'
         }`} />
-        <span className="text-xs font-medium transition-colors duration-200 mb-1">Ajustes</span>
+        <span className={`text-xs font-medium transition-colors duration-200 mb-1 ${
+          isActive('/settings')
+            ? 'text-[#f7bb17] dark:text-[#f7bb17]'
+            : 'text-gray-600 dark:text-white'
+        }`}>Ajustes</span>
       </Link>
     </div>
   );

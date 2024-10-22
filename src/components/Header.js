@@ -1,37 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { FaSignInAlt } from 'react-icons/fa';
-import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { Moon, Sun } from "lucide-react";
+import { Switch } from "./ui/switch";
 
 const Header = () => {
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [user, setUser] = useState(null);
-  const navigate = useNavigate();
-  
-  const API_URL = 'https://backendfindout-ea692e018a66.herokuapp.com/api/login/';
+  const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) return;
-
-      try {
-        const config = {
-          headers: {
-            'Authorization': `Token ${token}`
-          }
-        };
-
-        const response = await axios.get(API_URL, config);
-        setUser(response.data);
-      } catch (err) {
-        console.error('Error fetching user data:', err);
-        localStorage.removeItem('token');
+    const storedDarkMode = localStorage.getItem('darkMode');
+    
+    if (storedDarkMode === null) {
+      localStorage.setItem('darkMode', 'true');
+      document.documentElement.classList.add('dark');
+    } else {
+      setIsDark(storedDarkMode === 'true');
+      if (storedDarkMode === 'true') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
       }
-    };
-
-    fetchUserData();
+    }
   }, []);
 
   useEffect(() => {
@@ -53,6 +43,17 @@ const Header = () => {
     };
   }, [lastScrollY]);
 
+  const toggleTheme = () => {
+    setIsDark(!isDark);
+    localStorage.setItem('darkMode', (!isDark).toString());
+    
+    if (!isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
+
   return (
     <header
       className={`fixed top-0 left-0 w-full bg-[#f5bc24] dark:bg-gray-800 shadow-md dark:shadow-gray-900/50 z-50 font-['Poppins',sans-serif] transition-all duration-500 ease-in-out ${
@@ -65,7 +66,7 @@ const Header = () => {
             <img
               src="/logoFindout.webp"
               alt="Logo"
-              className="h-10  object-contain dark:hidden"
+              className="h-10 object-contain dark:hidden"
             />
             <img
               src="/logoFindoutDarkMode.webp"
@@ -74,16 +75,16 @@ const Header = () => {
             />
           </Link>
         </div>
-        <div className="flex items-center gap-2">
-          {!user && (
-            <Link 
-              to="/login" 
-              className="flex items-center gap-2 text-gray-800 dark:text-white hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-            >
-              <span className="text-sm hidden sm:block">Iniciar sesión</span>
-              <FaSignInAlt className="text-2xl" />
-            </Link>
-          )}
+        <div className="flex items-center gap-4">
+          <div className="flex items-center space-x-2">
+            <Sun className="h-4 w-4 text-gray-700 dark:text-gray-400" />
+            <Switch
+              checked={isDark}
+              onCheckedChange={toggleTheme}
+              className="bg-gray-300 dark:bg-gray-600"
+            />
+            <Moon className="h-4 w-4 text-gray-700 dark:text-white" />
+          </div>
         </div>
       </nav>
     </header>
