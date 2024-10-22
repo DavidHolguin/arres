@@ -108,7 +108,7 @@ const MiniSearch = () => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="w-full max-w-2xl mx-auto text-start"
+      className="w-full max-w-2xl mt-4 mx-auto text-start"
     >
       <motion.h2
         initial={{ opacity: 0, y: -10 }}
