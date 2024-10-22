@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import MenuBar from './MenuBar';
 import { Link } from 'react-router-dom';
-import TopBurgers from './TopBurguers';
-import Slider from './Slider';
-import BannerSection from './BannerSection';
+import ChatbotList from './ChatbotList'; 
 import MiniSearch from './MiniSearch';
 
 
@@ -42,7 +40,7 @@ const CompanyList = () => {
       <div className=" mb-2"> {/* Añadido margen vertical */}
       <MiniSearch />
       </div>
-     
+      <ChatbotList />
       <MenuBar />
     </div>
   );
