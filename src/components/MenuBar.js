@@ -46,7 +46,7 @@ const MenuBar = () => {
       </Link>
 
       <Link
-        to="/places"
+        to="/search"
         className={`flex flex-col items-center w-16 transform transition-transform duration-300
           ${isActive('/places') ? 'scale-105' : 'hover:scale-105'}`}
       >
