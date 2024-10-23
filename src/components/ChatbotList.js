@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 
 const ChatbotList = () => {
   const [chatbots, setChatbots] = useState([]);
@@ -22,16 +22,35 @@ const ChatbotList = () => {
         }
 
         const data = await response.json();
-        const activeChatbots = data
-          .filter(chatbot => chatbot.is_active)
-          .map(({ name, description, avatar, id }) => ({
-            name,
-            description,
-            avatar,
-            id
-          }));
+        // Fetch last message timestamp for each chatbot
+        const chatbotsWithTimestamp = await Promise.all(
+          data
+            .filter(chatbot => chatbot.is_active)
+            .map(async ({ name, description, avatar, id }) => {
+              try {
+                const conversationResponse = await fetch(`https://influbot-1d8d03e5b676.herokuapp.com/api/chatbots/${id}/conversations/last/`);
+                const conversationData = await conversationResponse.json();
+                return {
+                  name,
+                  description,
+                  avatar,
+                  id,
+                  lastUsed: conversationData.last_message_timestamp || null
+                };
+              } catch (error) {
+                console.error(`Error fetching last message for chatbot ${id}:`, error);
+                return {
+                  name,
+                  description,
+                  avatar,
+                  id,
+                  lastUsed: null
+                };
+              }
+            })
+        );
         
-        setChatbots(activeChatbots);
+        setChatbots(chatbotsWithTimestamp);
       } catch (error) {
         console.error('Error:', error);
         setError(error.message);
@@ -44,7 +63,31 @@ const ChatbotList = () => {
   }, []);
 
   const handleChatbotClick = (chatbot) => {
+    // Save last used chatbot to localStorage
+    localStorage.setItem('lastUsedChatbot', JSON.stringify(chatbot));
     navigate(`/chatbot/${chatbot.id}`, { state: { chatbot } });
+  };
+
+  const formatLastUsed = (timestamp) => {
+    if (!timestamp) return 'No usado aún';
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
+    
+    if (diffInHours < 24) {
+      if (diffInHours === 0) {
+        const diffInMinutes = Math.floor((now - date) / (1000 * 60));
+        return `Hace ${diffInMinutes} ${diffInMinutes === 1 ? 'minuto' : 'minutos'}`;
+      }
+      return `Hace ${diffInHours} ${diffInHours === 1 ? 'hora' : 'horas'}`;
+    }
+    return date.toLocaleDateString('es-ES', { 
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   };
 
   if (loading) {
@@ -91,20 +134,22 @@ const ChatbotList = () => {
                 />
               </div>
 
-              <div className="w-[55%]">
-                <h3 className="text-sm font-semibold text-[#121445] dark:text-white m-0">
+              <div className="w-[75%]">
+                <h3 className="text-xl font-semibold text-[#121445] dark:text-white m-0">
                   {chatbot.name}
                 </h3>
-                <p className="text-xs text-gray-600 dark:text-gray-300 m-0">
+                <p className="text-sm text-gray-600 dark:text-gray-300 m-0">
                   {chatbot.description}
+                </p>
+                <p className="text-sm text-gray-400 mt-1">
+                  Último uso: {formatLastUsed(chatbot.lastUsed)}
                 </p>
               </div>
             </div>
 
-            <button className="bg-[#1449E2] text-white px-4 py-1 rounded-full text-sm font-medium flex items-center gap-1 shadow-inner hover:bg-blue-700 transition-colors">
-              <Plus className="w-4 h-4" />
-              Abrir
-            </button>
+            <div className="w-12 h-12 rounded-full bg-[#f5bc24] flex items-center justify-center group hover:bg-[#e4af20] transition-all duration-300">
+              <MessageCircle className="w-6 h-6 text-white transform group-hover:scale-110 transition-transform duration-300 animate-bounce" />
+            </div>
           </div>
         ))}
       </div>

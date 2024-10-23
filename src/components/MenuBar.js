@@ -63,13 +63,13 @@ const MenuBar = () => {
       </Link>
 
       <Link
-        to="/chats"
+        to="/chatbot"
         className="flex flex-col items-center pb-1 w-20 group"
       >
         <div className={`relative flex items-center justify-center w-14 h-14 -mt-5 mb-1
           bg-[#f7bb17] dark:bg-[#f7bb17] rounded-full shadow-lg 
           transform transition-all duration-300 
-          ${isActive('/chats') ? 'scale-110 ring-4 ring-[#f7bb17]/30' : 'hover:scale-110'}
+          ${isActive('/chatbot') ? 'scale-110 ring-4 ring-[#f7bb17]/30' : 'hover:scale-110'}
         `}>
           <div className="relative w-6 h-6">
             <MessageSquareMore
@@ -85,7 +85,7 @@ const MenuBar = () => {
           </div>
         </div>
         <span className={`text-xs font-medium mb-1 transition-colors duration-200 ${
-          isActive('/chats')
+          isActive('/chatbot')
             ? 'text-[#f7bb17] dark:text-[#f7bb17]'
             : 'text-gray-600 dark:text-white group-hover:text-[#f7bb17]'
         }`}>ChatBot</span>
