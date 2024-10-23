@@ -49,6 +49,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/company-categories/:categoryId" element={<CompanyCategory />} />
+            <Route path="/chatbots" element={<ChatbotList />} />
           </Routes>
         </main>
         <MenuBar />
