@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Send, Bot, ArrowLeft, Clock, Menu, X, User, AlertTriangle } from 'lucide-react';
+import { Send, Bot, Menu, X, Clock, ArrowLeft, AlertTriangle } from 'lucide-react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
 const ChatInterface = () => {
@@ -70,7 +70,6 @@ const ChatInterface = () => {
     }
   }, [id]);
 
-  // Efecto principal para cargar el chatbot
   useEffect(() => {
     const loadChatbot = async () => {
       try {
@@ -125,7 +124,6 @@ const ChatInterface = () => {
             }
           } catch (error) {
             console.warn('Error loading conversation history:', error);
-            // Continue without conversation history
           }
         }
       } catch (error) {
@@ -168,7 +166,6 @@ const ChatInterface = () => {
         setConversationId(data.conversation_id);
         setLastActive(new Date().toISOString());
         
-        // Actualizamos la lista de conversaciones si es una nueva
         if (!conversationId) {
           setConversations(prev => [{
             id: data.conversation_id,
@@ -185,7 +182,6 @@ const ChatInterface = () => {
       }]);
     } catch (error) {
       console.error('Error:', error);
-      // Mostrar mensaje de error al usuario
       setMessages(prev => [...prev, {
         role: 'system',
         content: 'Lo siento, hubo un error al procesar tu mensaje. Por favor, intenta nuevamente.',
@@ -204,15 +200,16 @@ const ChatInterface = () => {
 
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 w-72 bg-white dark:bg-gray-800 transform ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out z-30`}>
+      {/* Sidebar modificado */}
+      <div className={`fixed inset-y-0 left-0 w-72 bg-white dark:bg-gray-800 transform ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out z-30 flex flex-col`}>
         <div className="flex justify-between items-center p-4 border-b dark:border-gray-700">
           <h2 className="text-lg font-semibold dark:text-white">Conversaciones</h2>
           <button onClick={() => setIsMenuOpen(false)} className="p-2">
             <X className="w-6 h-6 text-gray-500 dark:text-gray-400" />
           </button>
         </div>
-        <div className="overflow-y-auto h-full">
+        
+        <div className="flex-1 overflow-y-auto">
           {loadingConversations ? (
             <div className="flex justify-center items-center h-32">
               <div className="animate-spin rounded-full h-8 w-8 border-2 border-yellow-400 border-t-transparent"></div>
@@ -247,32 +244,46 @@ const ChatInterface = () => {
             ))
           )}
         </div>
+
+        {/* Botón de salir agregado al final del menú */}
+        <button 
+          onClick={() => navigate(-1)}
+          className="p-4 border-t dark:border-gray-700 text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center gap-2"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          <span>Salir del chat</span>
+        </button>
       </div>
 
       {/* Main Chat Interface */}
       <div className="flex flex-col w-full">
-        {/* Header */}
-        <div className="flex items-center space-x-4 p-4 border-b dark:border-gray-700 bg-white dark:bg-gray-800 sticky top-0 z-20">
-          <button onClick={() => navigate(-1)} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full">
-            <ArrowLeft className="w-6 h-6 text-gray-500 dark:text-gray-400" />
-          </button>
-          <button onClick={() => setIsMenuOpen(true)} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full">
-            <Menu className="w-6 h-6 text-gray-500 dark:text-gray-400" />
-          </button>
-          <div className="w-10 h-10 rounded-full overflow-hidden">
-            {chatbot.avatar ? (
-              <img src={chatbot.avatar} alt={chatbot.name} className="w-full h-full object-cover" />
-            ) : (
-              <Bot className="w-full h-full p-2 bg-yellow-400" />
-            )}
-          </div>
-          <div className="flex-1">
-            <h2 className="text-lg font-bold dark:text-white">{chatbot.name}</h2>
-            <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-              <Clock className="w-4 h-4 mr-1" />
-              {formatLastActive(lastActive) || 'No hay actividad reciente'}
+        {/* Header reorganizado */}
+        <div className="flex items-center justify-between p-4 border-b dark:border-gray-700 bg-white dark:bg-gray-800 sticky top-0 z-20">
+          {/* Logo y nombre a la izquierda */}
+          <div className="flex items-center space-x-4">
+            <div className="w-10 h-10 rounded-full overflow-hidden">
+              {chatbot.avatar ? (
+                <img src={chatbot.avatar} alt={chatbot.name} className="w-full h-full object-cover" />
+              ) : (
+                <Bot className="w-full h-full p-2 bg-yellow-400" />
+              )}
+            </div>
+            <div>
+              <h2 className="text-lg font-bold dark:text-white">{chatbot.name}</h2>
+              <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                <Clock className="w-4 h-4 mr-1" />
+                {formatLastActive(lastActive) || 'No hay actividad reciente'}
+              </div>
             </div>
           </div>
+
+          {/* Menú a la derecha */}
+          <button 
+            onClick={() => setIsMenuOpen(true)} 
+            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
+          >
+            <Menu className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+          </button>
         </div>
 
         {/* Greeting */}
@@ -284,7 +295,15 @@ const ChatInterface = () => {
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {messages.length === 0 ? (
             <div className="text-center text-gray-500 dark:text-gray-400 mt-8">
-              <Bot className="w-12 h-12 mx-auto mb-4 text-yellow-400" />
+              {chatbot.avatar ? (
+                <img 
+                  src={chatbot.avatar} 
+                  alt={chatbot.name} 
+                  className="w-12 h-12 mx-auto mb-4 rounded-full"
+                />
+              ) : (
+                <Bot className="w-12 h-12 mx-auto mb-4 text-yellow-400" />
+              )}
               <p>¡Comienza una conversación con {chatbot.name}!</p>
             </div>
           ) : (
