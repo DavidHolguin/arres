@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Home, Store, User, Settings, MessageSquareMore, Brain } from 'lucide-react';
 
 const MenuBar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
   const [isIconSwapped, setIsIconSwapped] = useState(false);
   
@@ -20,6 +21,17 @@ const MenuBar = () => {
   }, []);
 
   const isActive = (path) => location.pathname === path;
+
+  const handleChatClick = (e) => {
+    e.preventDefault();
+    const lastChat = localStorage.getItem('lastActiveChat');
+    if (lastChat) {
+      const { chatbot } = JSON.parse(lastChat);
+      navigate(`/chatbot/${chatbot.id}`);
+    } else {
+      navigate('/chatbot');
+    }
+  };
 
   return (
     <div className={`fixed bottom-0 left-0 right-0 z-10 bg-white dark:bg-gray-800 
@@ -64,6 +76,7 @@ const MenuBar = () => {
 
       <Link
         to="/chatbot"
+        onClick={handleChatClick}
         className="flex flex-col items-center pb-1 w-20 group"
       >
         <div className={`relative flex items-center justify-center w-14 h-14 -mt-5 mb-1

@@ -21,28 +21,40 @@ const ChatInterface = () => {
     scrollToBottom();
   }, [messages]);
 
-  // Load chatbot data
+  // Load chatbot data and handle persistence
   useEffect(() => {
     const loadChatbot = async () => {
       try {
         setLoading(true);
         let targetId = id;
+        let targetChatbot = chatbot;
         
         // If no ID in URL, try to load from localStorage
         if (!targetId) {
-          const lastUsed = localStorage.getItem('lastUsedChatbot');
-          if (lastUsed) {
-            const savedChatbot = JSON.parse(lastUsed);
-            targetId = savedChatbot.id;
+          const lastChat = localStorage.getItem('lastActiveChat');
+          if (lastChat) {
+            const savedChat = JSON.parse(lastChat);
+            targetId = savedChat.chatbot.id;
+            targetChatbot = savedChat.chatbot;
             navigate(`/chatbot/${targetId}`, { replace: true });
           }
         }
 
-        if (targetId && !chatbot) {
+        if (targetId && !targetChatbot) {
           const response = await fetch(`https://influbot-1d8d03e5b676.herokuapp.com/api/chatbots/${targetId}/`);
           if (!response.ok) throw new Error('Failed to load chatbot');
           const data = await response.json();
+          targetChatbot = data;
           setChatbot(data);
+        }
+
+        if (targetChatbot) {
+          // Save current chat as active
+          localStorage.setItem('lastActiveChat', JSON.stringify({
+            chatbot: targetChatbot,
+            timestamp: new Date().toISOString(),
+            conversationId: null // Will be updated when available
+          }));
           
           // Load last conversation for this chatbot
           const conversationResponse = await fetch(`https://influbot-1d8d03e5b676.herokuapp.com/api/chatbots/${targetId}/conversations/last/`);
@@ -50,6 +62,14 @@ const ChatInterface = () => {
             const conversationData = await conversationResponse.json();
             if (conversationData.conversation_id) {
               setConversationId(conversationData.conversation_id);
+              
+              // Update localStorage with conversation ID
+              const lastChat = JSON.parse(localStorage.getItem('lastActiveChat'));
+              localStorage.setItem('lastActiveChat', JSON.stringify({
+                ...lastChat,
+                conversationId: conversationData.conversation_id
+              }));
+
               // Load conversation messages
               const messagesResponse = await fetch(`https://influbot-1d8d03e5b676.herokuapp.com/api/chatbots/${targetId}/conversations/${conversationData.conversation_id}/messages/`);
               if (messagesResponse.ok) {
@@ -97,6 +117,14 @@ const ChatInterface = () => {
       
       if (data.conversation_id) {
         setConversationId(data.conversation_id);
+        
+        // Update conversation ID in localStorage
+        const lastChat = JSON.parse(localStorage.getItem('lastActiveChat'));
+        localStorage.setItem('lastActiveChat', JSON.stringify({
+          ...lastChat,
+          conversationId: data.conversation_id,
+          timestamp: new Date().toISOString()
+        }));
       }
 
       setMessages(prev => [...prev, {
@@ -104,13 +132,6 @@ const ChatInterface = () => {
         content: data.message,
         timestamp: new Date().toISOString()
       }]);
-
-      // Update last used timestamp in localStorage
-      const lastUsedChatbot = JSON.parse(localStorage.getItem('lastUsedChatbot') || '{}');
-      localStorage.setItem('lastUsedChatbot', JSON.stringify({
-        ...lastUsedChatbot,
-        lastUsed: new Date().toISOString()
-      }));
     } catch (error) {
       console.error('Error:', error);
     }

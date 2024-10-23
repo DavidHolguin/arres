@@ -63,8 +63,12 @@ const ChatbotList = () => {
   }, []);
 
   const handleChatbotClick = (chatbot) => {
-    // Save last used chatbot to localStorage
-    localStorage.setItem('lastUsedChatbot', JSON.stringify(chatbot));
+    // Save as last active chat
+    localStorage.setItem('lastActiveChat', JSON.stringify({
+      chatbot,
+      timestamp: new Date().toISOString(),
+      conversationId: null
+    }));
     navigate(`/chatbot/${chatbot.id}`, { state: { chatbot } });
   };
 
@@ -118,7 +122,7 @@ const ChatbotList = () => {
         </button>
       </div>
 
-      <div className="w-full bg-white dark:bg-gray-800 rounded-t-lg">
+      <div className="w-full rounded-t-lg border border-[#f7bb17] dark:border-[#f7bb17] hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 rounded-lg">
         {chatbots.map((chatbot) => (
           <div
             key={chatbot.id}
@@ -135,7 +139,7 @@ const ChatbotList = () => {
               </div>
 
               <div>
-                <h3 className="text-xl leading-5	 font-semibold text-[#121445] dark:text-white m-0">
+                <h3 className="text-lg leading-5 font-semibold text-[#121445] dark:text-white m-0">
                   {chatbot.name}
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300 m-0">
@@ -146,8 +150,6 @@ const ChatbotList = () => {
                 </p>
               </div>
             </div>
-
-            
           </div>
         ))}
       </div>
