@@ -291,35 +291,17 @@ const ChatInterface = () => {
                 key={index}
                 className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
-                <div className="flex items-start max-w-[85%] space-x-2">
-                  {message.role === 'user' ? (
-                    <div className="order-2">
-                      <div className="dark:bg-gray-800 text-white rounded-lg p-3">
-                        {message.content}
-                      </div>
-                      <div className="text-xs text-right mt-1 text-gray-500">
-                        {new Date(message.timestamp).toLocaleTimeString()}
-                      </div>
-                    </div>
-                  ) : (
-                    <>
-                      <div className="w-8 h-8 rounded-full overflow-hidden">
-                        {chatbot.avatar ? (
-                          <img src={chatbot.avatar} alt={chatbot.name} className="w-full h-full object-cover" />
-                        ) : (
-                          <Bot className="w-full h-full p-1 text-gray-800" />
-                        )}
-                      </div>
-                      <div>
-                        <div className="bg-[#f7bb17] leading-5 rounded-lg p-3">
-                          {message.content}
-                        </div>
-                        <div className="text-xs mt-1 text-gray-500">
-                          {new Date(message.timestamp).toLocaleTimeString()}
-                        </div>
-                      </div>
-                    </>
-                  )}
+                <div className={`max-w-[85%] ${message.role === 'user' ? 'order-2' : ''}`}>
+                  <div className={`rounded-lg p-3 ${
+                    message.role === 'user' ? 'bg-white dark:bg-gray-800 text-white leading-4	 ' : 'leading-5	 bg-[#f7bb17]'
+                  }`}>
+                    {message.content}
+                  </div>
+                  <div className={`text-xs  mt-1 text-gray-500 ${
+                    message.role === 'user' ? 'text-right' : ''
+                  }`}>
+                    {new Date(message.timestamp).toLocaleTimeString()}
+                  </div>
                 </div>
               </div>
             ))
