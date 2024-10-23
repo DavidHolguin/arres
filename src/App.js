@@ -11,7 +11,7 @@ import Profile from './components/Profile';
 import Settings from './components/Settings';
 import CompanyCategory from './components/CompanyCategory';
 import ChatbotList from './components/ChatbotList';
-
+import ChatInterface from './components/ChatInterface';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -52,6 +52,7 @@ function App() {
             <Route path="/settings" element={<Settings />} />
             <Route path="/company-categories/:categoryId" element={<CompanyCategory />} />
             <Route path="/chatbots" element={<ChatbotList />} />
+            <Route path="/chatbot/:id" element={<ChatInterface />} />
           </Routes>
         </main>
         <MenuBar />

@@ -1,66 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { MessageCircle } from 'lucide-react';
-
-const ChatbotCard = ({ chatbot, onClick }) => (
-  <div 
-    className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105"
-    onClick={() => onClick(chatbot)}
-  >
-    <div className="relative h-40 bg-gradient-to-r from-cyan-500 to-blue-500">
-      <img
-        src={chatbot.avatar || "/api/placeholder/400/320"}
-        alt={chatbot.name}
-        className="w-full h-full object-cover"
-      />
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
-        <h3 className="text-white text-xl font-bold">{chatbot.name}</h3>
-        <p className="text-gray-200 text-sm">{chatbot.description?.substring(0, 50)}...</p>
-      </div>
-    </div>
-    
-    <div className="p-4 space-y-4">
-      <div className="space-y-2">
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium">Tipo:</span>
-          <span className="text-sm text-gray-600 dark:text-gray-400">
-            {chatbot.type || 'Asistente Virtual'}
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium">Modelo:</span>
-          <span className="text-sm text-gray-600 dark:text-gray-400">{chatbot.model}</span>
-        </div>
-        {chatbot.category && (
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-medium">Categoría:</span>
-            <span className="text-sm text-gray-600 dark:text-gray-400">{chatbot.category}</span>
-          </div>
-        )}
-      </div>
-
-      <div className="flex justify-between items-center pt-2">
-        <span className="text-xs text-gray-500 dark:text-gray-400">
-          Creado: {new Date(chatbot.created_at).toLocaleDateString()}
-        </span>
-        <button 
-          className="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-full text-sm flex items-center gap-2 transition-colors"
-          onClick={(e) => {
-            e.stopPropagation();
-            onClick(chatbot);
-          }}
-        >
-          <MessageCircle className="w-4 h-4" />
-          Chatear
-        </button>
-      </div>
-    </div>
-  </div>
-);
+import { useNavigate } from 'react-router-dom';
+import { Plus } from 'lucide-react';
 
 const ChatbotList = () => {
   const [chatbots, setChatbots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchChatbots = async () => {
@@ -72,25 +18,25 @@ const ChatbotList = () => {
         });
 
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.detail || 'Error al obtener los chatbots');
+          throw new Error('Error al obtener los chatbots');
         }
 
         const data = await response.json();
-        // Procesar los datos para asegurar que tengan todos los campos necesarios
-        const processedChatbots = data.map(chatbot => ({
-          ...chatbot,
-          type: chatbot.type || 'Asistente Virtual',
-          category: chatbot.category || 'General',
-          description: chatbot.description || 'Sin descripción disponible'
-        }));
+        const activeChatbots = data
+          .filter(chatbot => chatbot.is_active)
+          .map(({ name, description, avatar, id }) => ({
+            name,
+            description,
+            avatar,
+            id
+          }));
         
-        setChatbots(processedChatbots);
+        setChatbots(activeChatbots);
       } catch (error) {
-        console.error('Error al obtener chatbots:', error);
+        console.error('Error:', error);
         setError(error.message);
       } finally {
-        setLoading(false);  // Establecer loading a false después de cargar los datos
+        setLoading(false);
       }
     };
     
@@ -98,56 +44,68 @@ const ChatbotList = () => {
   }, []);
 
   const handleChatbotClick = (chatbot) => {
-    console.log('Chatbot seleccionado:', chatbot);
-    // Aquí puedes agregar la lógica para iniciar el chat
+    navigate(`/chatbot/${chatbot.id}`, { state: { chatbot } });
   };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-500"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex items-center justify-center h-64 flex-col gap-4">
-        <p className="text-red-500 text-center">{error}</p>
-        <button 
-          onClick={() => window.location.reload()} 
-          className="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-full text-sm transition-colors"
-        >
-          Reintentar
-        </button>
-      </div>
-    );
-  }
-
-  if (!chatbots?.length) {
-    return (
       <div className="flex items-center justify-center h-64">
-        <p className="text-gray-500">No hay chatbots disponibles</p>
+        <p className="text-red-500">{error}</p>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Chatbots Disponibles</h2>
-        <span className="text-sm text-gray-500">
-          {chatbots.length} {chatbots.length === 1 ? 'chatbot' : 'chatbots'} encontrados
-        </span>
+    <div className="w-full font-sans">
+      <div className="w-[90%] mx-auto flex justify-between items-center py-12">
+        <h2 className="text-lg font-semibold text-[#121445] dark:text-white">ChatBots</h2>
+        <button 
+          onClick={() => navigate('/chatbots')} 
+          className="text-sm text-[#121445] dark:text-white bg-transparent border-none cursor-pointer hover:underline"
+        >
+          Ver más
+        </button>
       </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {chatbots.map(chatbot => (
-          <ChatbotCard
+
+      <div className="w-full bg-white dark:bg-gray-800 rounded-t-lg">
+        {chatbots.map((chatbot) => (
+          <div
             key={chatbot.id}
-            chatbot={chatbot}
-            onClick={handleChatbotClick}
-          />
+            className="flex items-center justify-between p-4 border-t border-[#F9F6EF] dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
+            onClick={() => handleChatbotClick(chatbot)}
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-full shadow-inner overflow-hidden">
+                <img
+                  src={chatbot.avatar || "/api/placeholder/56/56"}
+                  alt={chatbot.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              <div className="w-[55%]">
+                <h3 className="text-sm font-semibold text-[#121445] dark:text-white m-0">
+                  {chatbot.name}
+                </h3>
+                <p className="text-xs text-gray-600 dark:text-gray-300 m-0">
+                  {chatbot.description}
+                </p>
+              </div>
+            </div>
+
+            <button className="bg-[#1449E2] text-white px-4 py-1 rounded-full text-sm font-medium flex items-center gap-1 shadow-inner hover:bg-blue-700 transition-colors">
+              <Plus className="w-4 h-4" />
+              Abrir
+            </button>
+          </div>
         ))}
       </div>
     </div>
