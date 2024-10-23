@@ -22,7 +22,9 @@ const ChatbotCard = ({ chatbot, onClick }) => (
       <div className="space-y-2">
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium">Tipo:</span>
-          <span className="text-sm text-gray-600 dark:text-gray-400">{chatbot.type}</span>
+          <span className="text-sm text-gray-600 dark:text-gray-400">
+            {chatbot.type || 'Asistente Virtual'}
+          </span>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium">Modelo:</span>
@@ -63,33 +65,41 @@ const ChatbotList = () => {
   useEffect(() => {
     const fetchChatbots = async () => {
       try {
-          const response = await fetch('https://influbot-1d8d03e5b676.herokuapp.com/api/chatbots/', {
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-          });
-  
-          if (!response.ok) {
-              const errorData = await response.json();
-              throw new Error(errorData.detail || 'Error al obtener los chatbots');
-          }
-  
-          const data = await response.json();
-          // Ahora data debería ser directamente el array de chatbots
-          setChatbots(Array.isArray(data) ? data : []);
+        const response = await fetch('https://influbot-1d8d03e5b676.herokuapp.com/api/chatbots/', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.detail || 'Error al obtener los chatbots');
+        }
+
+        const data = await response.json();
+        // Procesar los datos para asegurar que tengan todos los campos necesarios
+        const processedChatbots = data.map(chatbot => ({
+          ...chatbot,
+          type: chatbot.type || 'Asistente Virtual',
+          category: chatbot.category || 'General',
+          description: chatbot.description || 'Sin descripción disponible'
+        }));
+        
+        setChatbots(processedChatbots);
       } catch (error) {
-          console.error('Error al obtener chatbots:', error);
-          setError(error.message);
+        console.error('Error al obtener chatbots:', error);
+        setError(error.message);
+      } finally {
+        setLoading(false);  // Establecer loading a false después de cargar los datos
       }
-  };
-  
+    };
+    
     fetchChatbots();
   }, []);
 
   const handleChatbotClick = (chatbot) => {
     console.log('Chatbot seleccionado:', chatbot);
     // Aquí puedes agregar la lógica para iniciar el chat
-    // Por ejemplo, navegar a la página de chat o abrir un modal
   };
 
   if (loading) {
