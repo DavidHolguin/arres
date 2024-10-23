@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import CompanyList from './components/CompanyList';
 import CompanyDetail from './components/CompanyDetail';
@@ -12,6 +12,33 @@ import Settings from './components/Settings';
 import CompanyCategory from './components/CompanyCategory';
 import ChatbotList from './components/ChatbotList';
 import ChatInterface from './components/ChatInterface';
+
+// Componente envoltorio para manejar la lógica de visualización
+const AppContent = ({ darkMode, toggleDarkMode }) => {
+  const location = useLocation();
+  const isChatbotRoute = location.pathname.startsWith('/chatbot/');
+
+  return (
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
+      {!isChatbotRoute && <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />}
+      <main className={`container mx-auto ${!isChatbotRoute ? 'pt-16 pb-14' : ''} text-gray-900 dark:text-white`}>
+        <Routes>
+          <Route path="/" element={<CompanyList />} />
+          <Route path="/company/:id" element={<CompanyDetail />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/company-categories/:categoryId" element={<CompanyCategory />} />
+          <Route path="/chatbots" element={<ChatbotList />} />
+          <Route path="/chatbot/:id" element={<ChatInterface />} />
+        </Routes>
+      </main>
+      {!isChatbotRoute && <MenuBar />}
+    </div>
+  );
+};
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -39,24 +66,7 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
-        <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-        <main className="container mx-auto pt-16 pb-14 text-gray-900 dark:text-white">
-          <Routes>
-            <Route path="/" element={<CompanyList />} />
-            <Route path="/company/:id" element={<CompanyDetail />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/company-categories/:categoryId" element={<CompanyCategory />} />
-            <Route path="/chatbots" element={<ChatbotList />} />
-            <Route path="/chatbot/:id" element={<ChatInterface />} />
-          </Routes>
-        </main>
-        <MenuBar />
-      </div>
+      <AppContent darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
     </Router>
   );
 }
