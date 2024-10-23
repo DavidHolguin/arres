@@ -10,6 +10,8 @@ import MenuBar from './components/MenuBar';
 import Profile from './components/Profile';
 import Settings from './components/Settings';
 import CompanyCategory from './components/CompanyCategory';
+import ChatbotList from './components/ChatbotList';
+
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
