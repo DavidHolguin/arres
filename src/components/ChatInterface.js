@@ -19,19 +19,6 @@ const ChatInterface = () => {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
-  const getGreeting = () => {
-    const hour = new Date().getHours();
-    const username = 'CHdev'; // This should come from your auth system
-    
-    let timeOfDay;
-    if (hour >= 5 && hour < 12) timeOfDay = "mañana";
-    else if (hour >= 12 && hour < 18) timeOfDay = "tarde";
-    else if (hour >= 18 && hour < 22) timeOfDay = "noche";
-    else timeOfDay = "madrugada";
-    
-    return `¡Feliz ${timeOfDay}${username ? `, ${username}` : ''}!`;
-  };
-
   const formatLastActive = (timestamp) => {
     if (!timestamp) return '';
     const date = new Date(timestamp);
@@ -200,7 +187,7 @@ const ChatInterface = () => {
 
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Sidebar modificado */}
+      {/* Sidebar */}
       <div className={`fixed inset-y-0 left-0 w-72 bg-white dark:bg-gray-800 transform ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out z-30 flex flex-col`}>
         <div className="flex justify-between items-center p-4 border-b dark:border-gray-700">
           <h2 className="text-lg font-semibold dark:text-white">Conversaciones</h2>
@@ -245,7 +232,6 @@ const ChatInterface = () => {
           )}
         </div>
 
-        {/* Botón de salir agregado al final del menú */}
         <button 
           onClick={() => navigate(-1)}
           className="p-4 border-t dark:border-gray-700 text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center gap-2"
@@ -257,11 +243,10 @@ const ChatInterface = () => {
 
       {/* Main Chat Interface */}
       <div className="flex flex-col w-full">
-        {/* Header reorganizado */}
+        {/* Header */}
         <div className="flex items-center justify-between p-4 border-b dark:border-gray-700 bg-white dark:bg-gray-800 sticky top-0 z-20">
-          {/* Logo y nombre a la izquierda */}
           <div className="flex items-center space-x-4">
-            <div className="w-10 h-10 rounded-full overflow-hidden">
+            <div className="w-12 h-12 rounded-full overflow-hidden">
               {chatbot.avatar ? (
                 <img src={chatbot.avatar} alt={chatbot.name} className="w-full h-full object-cover" />
               ) : (
@@ -277,18 +262,12 @@ const ChatInterface = () => {
             </div>
           </div>
 
-          {/* Menú a la derecha */}
           <button 
             onClick={() => setIsMenuOpen(true)} 
             className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
           >
             <Menu className="w-6 h-6 text-gray-500 dark:text-gray-400" />
           </button>
-        </div>
-
-        {/* Greeting */}
-        <div className="p-4 text-center text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-900">
-          {getGreeting()}
         </div>
 
         {/* Messages */}
@@ -299,12 +278,12 @@ const ChatInterface = () => {
                 <img 
                   src={chatbot.avatar} 
                   alt={chatbot.name} 
-                  className="w-12 h-12 mx-auto mb-4 rounded-full"
+                  className="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-yellow-400 shadow-lg" 
                 />
               ) : (
-                <Bot className="w-12 h-12 mx-auto mb-4 text-yellow-400" />
+                <Bot className="w-24 h-24 mx-auto mb-4 text-yellow-400 p-4 bg-yellow-100 rounded-full" />
               )}
-              <p>¡Comienza una conversación con {chatbot.name}!</p>
+              <p className="text-lg font-semibold">¡Comienza una conversación con {chatbot.name}!</p>
             </div>
           ) : (
             messages.map((message, index) => (
@@ -312,10 +291,10 @@ const ChatInterface = () => {
                 key={index}
                 className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
-                <div className="flex items-start max-w-[70%] space-x-2">
+                <div className="flex items-start max-w-[85%] space-x-2">
                   {message.role === 'user' ? (
                     <div className="order-2">
-                      <div className="bg-blue-500 text-white rounded-lg p-3">
+                      <div className="dark:bg-gray-800 text-white rounded-lg p-3">
                         {message.content}
                       </div>
                       <div className="text-xs text-right mt-1 text-gray-500">
@@ -332,7 +311,7 @@ const ChatInterface = () => {
                         )}
                       </div>
                       <div>
-                        <div className="bg-[#f7bb17] rounded-lg p-3">
+                        <div className="bg-[#f7bb17] leading-5 rounded-lg p-3">
                           {message.content}
                         </div>
                         <div className="text-xs mt-1 text-gray-500">
@@ -348,8 +327,8 @@ const ChatInterface = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input */}
-        <div className="p-4 border-t dark:border-gray-700 bg-white dark:bg-gray-800">
+        {/* Input - Fixed at bottom */}
+        <div className="sticky bottom-0 p-4 border-t dark:border-gray-700 bg-white dark:bg-gray-800">
           <div className="max-w-4xl mx-auto">
             <div className="relative flex items-center">
               <input
