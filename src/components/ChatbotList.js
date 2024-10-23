@@ -89,7 +89,7 @@ const ChatbotList = () => {
   return (
     <div className="w-full font-sans pt-4 pb-10">
       <div className="mx-auto flex justify-between items-center pb-4">
-        <h2 className="text-2xl font-bold text-[#121445] dark:text-white">
+        <h2 className="text-xl font-bold text-[#121445] dark:text-white">
           ChatBots
         </h2>
         <button 
@@ -100,7 +100,7 @@ const ChatbotList = () => {
         </button>
       </div>
 
-      <div className="grid gap-4">
+      <div className="grid gap-2">
         {chatbots.map((chatbot) => (
           <div
             key={chatbot.id}
@@ -109,10 +109,10 @@ const ChatbotList = () => {
           >
             <div className="absolute inset-0 bg-gradient-to-r from-[#f7bb17]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             
-            <div className="flex items-center p-4 gap-4">
+            <div className="flex items-center px-4 py-3 gap-4">
               {/* Avatar container with fixed dimensions */}
               <div className="flex-shrink-0 w-16 h-16">
-                <div className="w-full h-full rounded-full overflow-hidden border-2 border-white/50 shadow-lg">
+                <div className="w-full h-full rounded-full overflow-hidden border-2 border-[#f7bb17] shadow-lg">
                   <img
                     src={chatbot.avatar || "/api/placeholder/64/64"}
                     alt={chatbot.name}

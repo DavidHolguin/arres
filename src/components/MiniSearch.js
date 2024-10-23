@@ -146,9 +146,9 @@ const MiniSearch = () => {
           placeholder={placeholderText}
           onMouseEnter={() => handleInputHover(true)}
           onMouseLeave={() => handleInputHover(false)}
-          className="w-full pl-14 pr-6 py-4 rounded-full border-2 border-[#f7bb17] 
+          className="w-full pl-14 pr-6 py-3 rounded-full border border-[#f7bb17] 
                     bg-white/70 backdrop-blur-md dark:bg-gray-800/70
-                    focus:outline-none focus:ring-4 focus:ring-[#f7bb17]/30
+                    focus:outline-none focus:ring-2 focus:ring-[#f7bb17]/100
                     placeholder-gray-400 dark:placeholder-gray-500
                     text-gray-900 dark:text-white
                     transition-all duration-300
