@@ -4,6 +4,7 @@ import { MessageCircle } from 'lucide-react';
 const ChatbotCard = ({ chatbot, onClick }) => (
   <div 
     className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105"
+    onClick={() => onClick(chatbot)}
   >
     <div className="relative h-40 bg-gradient-to-r from-cyan-500 to-blue-500">
       <img
@@ -62,35 +63,33 @@ const ChatbotList = () => {
   useEffect(() => {
     const fetchChatbots = async () => {
       try {
-        setLoading(true);
-        const token = localStorage.getItem('token'); // O donde guardes tu token de autenticación
-        
-        const response = await fetch('https://influbot-1d8d03e5b676.herokuapp.com/api/chatbots/', {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` // Agrega el token de autorización
-          },
-        });
-        
-        if (!response.ok) {
-          const text = await response.text();
-          console.log('Response text:', text);
-          throw new Error('Error al cargar los chatbots');
-        }
-        
-        const data = await response.json();
-        setChatbots(data);
-      } catch (err) {
-        setError(err.message);
-        console.error('Error completo:', err);
-      } finally {
-        setLoading(false);
+          const response = await fetch('https://influbot-1d8d03e5b676.herokuapp.com/api/chatbots/', {
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+          });
+  
+          if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(errorData.detail || 'Error al obtener los chatbots');
+          }
+  
+          const data = await response.json();
+          setChatbots(data.data);
+      } catch (error) {
+          console.error('Error al obtener chatbots:', error);
+          setError(error.message);
       }
-    };
+  };
 
     fetchChatbots();
   }, []);
+
+  const handleChatbotClick = (chatbot) => {
+    console.log('Chatbot seleccionado:', chatbot);
+    // Aquí puedes agregar la lógica para iniciar el chat
+    // Por ejemplo, navegar a la página de chat o abrir un modal
+  };
 
   if (loading) {
     return (
@@ -102,8 +101,14 @@ const ChatbotList = () => {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <p className="text-red-500">Error al cargar los chatbots: {error}</p>
+      <div className="flex items-center justify-center h-64 flex-col gap-4">
+        <p className="text-red-500 text-center">{error}</p>
+        <button 
+          onClick={() => window.location.reload()} 
+          className="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-full text-sm transition-colors"
+        >
+          Reintentar
+        </button>
       </div>
     );
   }
@@ -118,16 +123,19 @@ const ChatbotList = () => {
 
   return (
     <div className="container mx-auto py-8 px-4">
-      <h2 className="text-2xl font-bold mb-6">Chatbots Disponibles</h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold">Chatbots Disponibles</h2>
+        <span className="text-sm text-gray-500">
+          {chatbots.length} {chatbots.length === 1 ? 'chatbot' : 'chatbots'} encontrados
+        </span>
+      </div>
+      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {chatbots.map(chatbot => (
           <ChatbotCard
             key={chatbot.id}
             chatbot={chatbot}
-            onClick={(chatbot) => {
-              console.log('Chatbot seleccionado:', chatbot);
-              // Aquí puedes agregar la lógica para iniciar el chat
-            }}
+            onClick={handleChatbotClick}
           />
         ))}
       </div>
