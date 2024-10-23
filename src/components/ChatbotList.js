@@ -75,13 +75,14 @@ const ChatbotList = () => {
           }
   
           const data = await response.json();
-          setChatbots(data.data);
+          // Ahora data debería ser directamente el array de chatbots
+          setChatbots(Array.isArray(data) ? data : []);
       } catch (error) {
           console.error('Error al obtener chatbots:', error);
           setError(error.message);
       }
   };
-
+  
     fetchChatbots();
   }, []);
 
