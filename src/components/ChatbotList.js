@@ -63,7 +63,8 @@ const ChatbotList = () => {
     const fetchChatbots = async () => {
       try {
         setLoading(true);
-        const response = await fetch('https://influbot-1d8d03e5b676.herokuapp.com/api/chatbots/');
+        // Actualizar esta URL según la estructura que elijas
+        const response = await fetch('/api/chatbots/chatbots/');
         if (!response.ok) {
           throw new Error('Error al cargar los chatbots');
         }
