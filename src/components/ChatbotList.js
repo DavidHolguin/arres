@@ -63,16 +63,27 @@ const ChatbotList = () => {
     const fetchChatbots = async () => {
       try {
         setLoading(true);
-        // Actualizar esta URL según la estructura que elijas
-        const response = await fetch('/api/chatbots/chatbots/');
+        const token = localStorage.getItem('token'); // O donde guardes tu token de autenticación
+        
+        const response = await fetch('https://influbot-1d8d03e5b676.herokuapp.com/api/chatbots/', {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Agrega el token de autorización
+          },
+        });
+        
         if (!response.ok) {
+          const text = await response.text();
+          console.log('Response text:', text);
           throw new Error('Error al cargar los chatbots');
         }
+        
         const data = await response.json();
         setChatbots(data);
       } catch (err) {
         setError(err.message);
-        console.error('Error al obtener chatbots:', err);
+        console.error('Error completo:', err);
       } finally {
         setLoading(false);
       }
