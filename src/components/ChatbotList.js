@@ -108,7 +108,7 @@ const ChatbotList = () => {
 
   return (
     <div className="w-full font-sans">
-      <div className="w-[90%] mx-auto flex justify-between items-center py-12">
+      <div className="mx-auto flex justify-between items-center pb-4 pt-6">
         <h2 className="text-lg font-semibold text-[#121445] dark:text-white">ChatBots</h2>
         <button 
           onClick={() => navigate('/chatbots')} 
@@ -122,10 +122,10 @@ const ChatbotList = () => {
         {chatbots.map((chatbot) => (
           <div
             key={chatbot.id}
-            className="flex items-center justify-between p-4 border-t border-[#F9F6EF] dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
+            className="flex items-center justify-between px-4 py-3 border-t border-[#F9F6EF] dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
             onClick={() => handleChatbotClick(chatbot)}
           >
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <div className="w-14 h-14 rounded-full shadow-inner overflow-hidden">
                 <img
                   src={chatbot.avatar || "/api/placeholder/56/56"}
@@ -134,8 +134,8 @@ const ChatbotList = () => {
                 />
               </div>
 
-              <div className="w-[75%]">
-                <h3 className="text-xl font-semibold text-[#121445] dark:text-white m-0">
+              <div>
+                <h3 className="text-xl leading-5	 font-semibold text-[#121445] dark:text-white m-0">
                   {chatbot.name}
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300 m-0">
@@ -147,9 +147,7 @@ const ChatbotList = () => {
               </div>
             </div>
 
-            <div className="w-12 h-12 rounded-full bg-[#f5bc24] flex items-center justify-center group hover:bg-[#e4af20] transition-all duration-300">
-              <MessageCircle className="w-6 h-6 text-white transform group-hover:scale-110 transition-transform duration-300 animate-bounce" />
-            </div>
+            
           </div>
         ))}
       </div>
