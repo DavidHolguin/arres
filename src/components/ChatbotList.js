@@ -22,7 +22,6 @@ const ChatbotList = () => {
         }
 
         const data = await response.json();
-        // Fetch last message timestamp for each chatbot
         const chatbotsWithTimestamp = await Promise.all(
           data
             .filter(chatbot => chatbot.is_active)
@@ -63,35 +62,12 @@ const ChatbotList = () => {
   }, []);
 
   const handleChatbotClick = (chatbot) => {
-    // Save as last active chat
     localStorage.setItem('lastActiveChat', JSON.stringify({
       chatbot,
       timestamp: new Date().toISOString(),
       conversationId: null
     }));
     navigate(`/chatbot/${chatbot.id}`, { state: { chatbot } });
-  };
-
-  const formatLastUsed = (timestamp) => {
-    if (!timestamp) return 'No usado aún';
-    const date = new Date(timestamp);
-    const now = new Date();
-    const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
-    
-    if (diffInHours < 24) {
-      if (diffInHours === 0) {
-        const diffInMinutes = Math.floor((now - date) / (1000 * 60));
-        return `Hace ${diffInMinutes} ${diffInMinutes === 1 ? 'minuto' : 'minutos'}`;
-      }
-      return `Hace ${diffInHours} ${diffInHours === 1 ? 'hora' : 'horas'}`;
-    }
-    return date.toLocaleDateString('es-ES', { 
-      year: 'numeric', 
-      month: 'short', 
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
   };
 
   if (loading) {
@@ -111,42 +87,47 @@ const ChatbotList = () => {
   }
 
   return (
-    <div className="w-full font-sans">
-      <div className="mx-auto flex justify-between items-center pb-4 pt-6">
-        <h2 className="text-lg font-semibold text-[#121445] dark:text-white">ChatBots</h2>
+    <div className="w-full font-sans pt-4 pb-10">
+      <div className="mx-auto flex justify-between items-center pb-4">
+        <h2 className="text-2xl font-bold text-[#121445] dark:text-white">
+          ChatBots
+        </h2>
         <button 
           onClick={() => navigate('/chatbots')} 
-          className="text-sm text-[#121445] dark:text-white bg-transparent border-none cursor-pointer hover:underline"
+          className="px-4 py-2 text-sm font-medium text-[#121445] dark:text-white hover:bg-white/10 rounded-lg transition-all duration-300"
         >
           Ver más
         </button>
       </div>
 
-      <div className="w-full rounded-t-lg border border-[#f7bb17] dark:border-[#f7bb17] hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 rounded-lg">
+      <div className="grid gap-4">
         {chatbots.map((chatbot) => (
           <div
             key={chatbot.id}
-            className="flex items-center justify-between px-4 py-3 border-t border-[#F9F6EF] dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
             onClick={() => handleChatbotClick(chatbot)}
+            className="group relative overflow-hidden rounded-xl backdrop-blur-lg bg-white/30 dark:bg-gray-800/30 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-14 h-14 rounded-full shadow-inner overflow-hidden">
-                <img
-                  src={chatbot.avatar || "/api/placeholder/56/56"}
-                  alt={chatbot.name}
-                  className="w-full h-full object-cover"
-                />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#f7bb17]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            
+            <div className="flex items-center p-4 gap-4">
+              {/* Avatar container with fixed dimensions */}
+              <div className="flex-shrink-0 w-16 h-16">
+                <div className="w-full h-full rounded-full overflow-hidden border-2 border-white/50 shadow-lg">
+                  <img
+                    src={chatbot.avatar || "/api/placeholder/64/64"}
+                    alt={chatbot.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
 
-              <div>
-                <h3 className="text-lg leading-5 font-semibold text-[#121445] dark:text-white m-0">
+              {/* Content container with flex-grow */}
+              <div className="flex-grow">
+                <h3 className="text-lg font-semibold text-[#121445] dark:text-white truncate">
                   {chatbot.name}
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300 m-0">
+                <p className="text-sm text-gray-600 leading-4	 dark:text-gray-300 line-clamp-2 h-10">
                   {chatbot.description}
-                </p>
-                <p className="text-sm text-gray-400 mt-1">
-                  Último uso: {formatLastUsed(chatbot.lastUsed)}
                 </p>
               </div>
             </div>
